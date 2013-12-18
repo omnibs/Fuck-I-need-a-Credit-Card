@@ -1,0 +1,75 @@
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+
+.box {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+  text-align: center;
+}
+.box .box-heading,
+.box .checkbox {
+  margin-bottom: 10px;
+  text-align: center;
+}
+.box .imga-thumbnail {
+  font-weight: normal;
+  width: 128px;
+}
+.box .form-control {
+  position: relative;
+  font-size: 16px;
+  height: auto;
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.box .form-control:focus {
+  z-index: 2;
+}
+.box .first{
+  margin-bottom: -1px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.box .middle{
+  margin-bottom: -1px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  margin-top: -18px;
+  margin-bottom: -19px;
+}
+.box .last{
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+#cards {
+	margin: 20px;
+	height: 70px;
+}
+#cards img {
+	float:left;
+	width:52px;
+	height: 36px;
+	padding: 3px;
+}
+
+#cards img:hover{
+	background: #6EB8F8;
+}
+#cards img.selected{
+	background: #E74646
+}
+
+#cards img.unavailable{
+	opacity:0.4;
+	filter:alpha(opacity=40); /* For IE8 and earlier */
+}
