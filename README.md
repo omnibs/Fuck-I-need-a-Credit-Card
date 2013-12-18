@@ -1,6 +1,4 @@
-CreditCard_Number_Generator-PHP
+CreditCard_Number_Generator-JS
 ===============================
 
-Generates Luhn Check compliant credit card numbers with choices for ending and beginning digits.
-
-Useful for ecommerce software testing when credit card number has begin and/or end with a specific string of digits.
+Quickest and dirties solution I've come up with to generate credit card numbers with variable length, prefixes and sufixes.
