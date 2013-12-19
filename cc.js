@@ -15,6 +15,8 @@ $(function(){
 		$sufix.val('');
 		$length.val('');
 		$results.addClass('hidden');
+		$cards.removeClass('selected'); 
+		$cards.removeClass('unavailable');
 	}
 	
 	var mark_matching_cards = function(number){
@@ -77,7 +79,6 @@ $(function(){
 	$('input').keyup(function(){
 		$cards.removeClass('selected'); 
 		$cards.removeClass('unavailable');
-
 		refresh_from_inputs();
 	});
 	
