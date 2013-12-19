@@ -8,34 +8,82 @@ $(function(){
 	var $msg = $('#msg');
 	var $results = $('#results');
 	var $name = $('#name');
+	var $cards = $('#cards img');
 
+	var clear_inputs = function(){
+		$prefix.val('');
+		$sufix.val('');
+		$length.val('');
+		$results.addClass('hidden');
+	}
+	
+	var mark_matching_cards = function(number){
+		$cards.removeClass('unavailable');
+		$.each(card_types, function(){
+			if (!this.pattern.test(number)) {
+				var idx = card_types.indexOf(this);
+				$($cards[idx]).addClass('unavailable');
+			}
+		});
+	};
 	var show_validation = function(result){
 		if (result.luhn_valid) {
 			$generated.text(result.number);
 			$flag.attr('src',"img/" + result.card_type.name + '.png');
 			$name.text(camelCase(result.card_type.name));
+			
 			$results.removeClass('hidden');
+			
+			// mark card as selected
+			$.each(card_types, function(){
+				if (this == result.card_type) {
+					var idx = card_types.indexOf(this);
+					$($cards[idx]).addClass('selected');
+				}
+			});
 		}
 		else {
-			$msg.val(result);
 			$alert.removeClass('hidden');
 		}
+		
+		mark_matching_cards(result.number);
 	}
 	
-	var refresh = function(){
+	var refresh_from_inputs = function(){
 		$results.addClass('hidden');$alert.addClass('hidden');
 
 		var prefix = $prefix.val();//ending digits
 		var sufix = $sufix.val();//begining digits
 		var length = $length.val() -0 || 15;//lenght of cc
-		
+
 		generate(prefix, sufix, length, show_validation);
 	};
+	
+	var refresh_from_image = function(elm){
+		clear_inputs();
+		$cards.removeClass('selected');
+		$(elm).addClass('selected');
+		var cardType = card_types[$cards.index(elm)];
+		$prefix.val(new RandExp(cardType.pattern).gen());
+		$length.val(cardType.valid_length[0]);
+		
+		refresh_from_inputs();
+	};
+	
+	var copy_to_clipboard = function(){
+		clip.setText($generated.text());
+	};
 
-	$prefix.keyup(refresh);
-	$sufix.keyup(refresh);
-	$length.keyup(refresh);
-	$('button').click(refresh);
+	$('input').keyup(function(){
+		$cards.removeClass('selected'); 
+		$cards.removeClass('unavailable');
+
+		refresh_from_inputs();
+	});
+	
+	$('button').click(function(){clear_inputs(); refresh_from_inputs();});
+	$cards.click(function(){refresh_from_image(this);});
+	$results.click(copy_to_clipboard);
 });
 
 function generate(prefix, sufix, length, result){
@@ -59,52 +107,54 @@ function generate(prefix, sufix, length, result){
 	(result||function(){})(validationResult);
 }
 
+var card_types = [
+  {
+	name: 'amex',
+	pattern: /^3[47]/,
+	valid_length: [15]
+  }, {
+	name: 'diners_club_carte_blanche',
+	pattern: /^30[0-5]/,
+	valid_length: [14]
+  }, {
+	name: 'diners_club_international',
+	pattern: /^36/,
+	valid_length: [14]
+  }, {
+	name: 'jcb',
+	pattern: /^35(2[89]|[3-8][0-9])/,
+	valid_length: [16]
+  }, {
+	name: 'laser',
+	pattern: /^(6304|670[69]|6771)/,
+	valid_length: [16, 17, 18, 19]
+  }, {
+	name: 'visa_electron',
+	pattern: /^(4026|417500|4508|4844|491(3|7))/,
+	valid_length: [16]
+  }, {
+	name: 'visa',
+	pattern: /^4/,
+	valid_length: [16]
+  }, {
+	name: 'mastercard',
+	pattern: /^5[1-5]/,
+	valid_length: [16]
+  }, {
+	name: 'maestro',
+	pattern: /^(5018|5020|5038|6304|6759|676[1-3])/,
+	valid_length: [12, 13, 14, 15, 16, 17, 18, 19]
+  }, {
+	name: 'discover',
+	pattern: /^(6011|622(12[6-9]|1[3-9][0-9]|[2-8][0-9]{2}|9[0-1][0-9]|92[0-5]|64[4-9])|65)/,
+	valid_length: [16]
+  }
+];
+
 var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 var validateCreditCard = function(ccNumber, options) {
-    var card, card_type, card_types, get_card_type, is_valid_length, is_valid_luhn, normalize, validate, validate_number, _i, _len, _ref;
-    card_types = [
-      {
-        name: 'amex',
-        pattern: /^3[47]/,
-        valid_length: [15]
-      }, {
-        name: 'diners_club_carte_blanche',
-        pattern: /^30[0-5]/,
-        valid_length: [14]
-      }, {
-        name: 'diners_club_international',
-        pattern: /^36/,
-        valid_length: [14]
-      }, {
-        name: 'jcb',
-        pattern: /^35(2[89]|[3-8][0-9])/,
-        valid_length: [16]
-      }, {
-        name: 'laser',
-        pattern: /^(6304|670[69]|6771)/,
-        valid_length: [16, 17, 18, 19]
-      }, {
-        name: 'visa_electron',
-        pattern: /^(4026|417500|4508|4844|491(3|7))/,
-        valid_length: [16]
-      }, {
-        name: 'visa',
-        pattern: /^4/,
-        valid_length: [16]
-      }, {
-        name: 'mastercard',
-        pattern: /^5[1-5]/,
-        valid_length: [16]
-      }, {
-        name: 'maestro',
-        pattern: /^(5018|5020|5038|6304|6759|676[1-3])/,
-        valid_length: [12, 13, 14, 15, 16, 17, 18, 19]
-      }, {
-        name: 'discover',
-        pattern: /^(6011|622(12[6-9]|1[3-9][0-9]|[2-8][0-9]{2}|9[0-1][0-9]|92[0-5]|64[4-9])|65)/,
-        valid_length: [16]
-      }
-    ];
+    var card, card_type, get_card_type, is_valid_length, is_valid_luhn, normalize, validate, validate_number, _i, _len, _ref;
+    
     if (options == null) {
       options = {};
     }

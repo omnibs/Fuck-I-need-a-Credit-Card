@@ -17,6 +17,9 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 	<script src="cc.js"></script>
+	<script src="lib/randexp.min.js"></script>
+	<script src="lib/zeroclipboard.min.js"></script>
+	<script>ZeroClipboard.setDefaults( { moviePath: '/lib/ZeroClipboard.swf' } ); var clip = new new ZeroClipboard();</script>
   </head>
   <body>
     <div class="box">
@@ -33,16 +36,16 @@
 			<img src="img/maestro.png">
 			<img src="img/discover.png">
 		</div>
-		<input type="text" id="length" class="form-control first" placeholder="Length (default: 15)" autofocus><br/>
-		<input type="text" id="prefix" class="form-control middle" placeholder="Starts with..."><br/>
-		<input type="text" id="sufix" class="form-control last" placeholder="Ends with...">
+		<input type="text" id="length" class="form-control first" placeholder="Length (default: 15)" autofocus title="Length of card number"><br/>
+		<input type="text" id="prefix" class="form-control middle" placeholder="Starts with..." title="Card number must start with..."><br/>
+		<input type="text" id="sufix" class="form-control last" placeholder="Ends with..." title="Card number must end with...">
 		<button class="btn btn-lg btn-primary btn-block" type="submit">Any Card!!!</button>
 		<br/>
 		<div class="alert alert-danger hidden">
 			<strong>Generation Failed!</strong> 
 			<br/><span id="msg">Card could not be generated for these parameters.</span>
 		</div>
-		<div id="results" class="hidden">
+		<div id="results" class="apanel apanel-primary hidden">
 			<h4 id="name">VISA</h4>
 			<img id="flag" class="imga-thumbnail">
 			<h3 id="generated" class="box-heading">OIOIOI</h3>
